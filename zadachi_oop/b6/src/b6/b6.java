@@ -59,6 +59,7 @@ public class b6 {
 		
 	}
 	
+	//число белла(n) €вл€етс€ суммой чисел стирлинга до n
 	static int bell(int n) {
 		int sum = 0;
 		for(int i = 0; i <= n; i++) {
@@ -66,6 +67,7 @@ public class b6 {
 		}
 		return sum;
 	}
+	//число стирлигна(n,k) вычисл€етс€ по рекурсивной формуле ниже
 	static int Stirling (int n, int k){
 	    if (n==k) return 1;
 	    else
@@ -75,6 +77,7 @@ public class b6 {
 
 	}
 	
+	//переводит слово на свинский-англйский
 	static String translateWord(String s) {
 		s = s.toLowerCase();
 		
@@ -82,6 +85,7 @@ public class b6 {
 			s+="yay";
 		}else {
 			String temp = "";
+			//после првой гласной вставл€ет ау
 			for(int i = 0; i < s.length(); i++) {
 				if(!isVowel(s.charAt(i))) {
 					temp+=s.charAt(i);
@@ -95,6 +99,7 @@ public class b6 {
 		
 		return s;
 	}
+	//переводит предложение на свенский англйский с сохранением знаков препинани€
 	static String translateSentance(String s) {
 		String[] strs = s.split(" ");
 		String[] words = strs.clone();
@@ -119,11 +124,13 @@ public class b6 {
 		}
 		return res;
 	}
+	//¬спомогательна€ функци€ провер€ет символ на гласность
 	static boolean isVowel(char c) {
 		return String.valueOf(c).matches("[eyuioaеыаоэ€ию]");
 	}
 	
-	
+	//можно было бы сделать регул€рными выражени€ми, но было решено распилить строки руками
+	//отдельно дл€ rgb и rgba
 	static boolean validColor(String s) {
 		s = s.replaceAll(" ", "").trim();		
 		
@@ -185,6 +192,7 @@ public class b6 {
 
 		if(s.indexOf("?") == -1) return s;
 		
+		//достает параметры из строки и складыват их в словарь
 		String str = s.substring(s.indexOf("?")+1);
 		String[] vars = str.split("&");
 		for(String v : vars) {
@@ -196,7 +204,8 @@ public class b6 {
 		String[] keySet = new String[params.keySet().toArray().length];
 		for(int j = 0; j < keySet.length; j++) keySet[j] = (String)params.keySet().toArray()[j];
 		Arrays.sort(keySet);
-
+		
+		//формирует новую строку, перезаписыва€ значени€ параметров
 		for(int i = 0; i < keySet.length; i++) {
 			if(in(p,keySet[i])) continue;
 			res+= keySet[i]+"="+params.get(keySet[i])+"&";
@@ -204,17 +213,19 @@ public class b6 {
 		
 		return res.endsWith("&") ? res.substring(0,res.length()-1):res;
 	}
+	//перегрузка дл€ пустой строки
 	static String stripUrlParams(String s) {
 		return stripUrlParams(s, new String[] {});
 	}
 	
 	static String[] getHashTags(String str) {
 		String[] strs = str.split(" ");
-		//sort by length
+		//sort by length with comparator
 		Arrays.sort(strs, (a, b)->Integer.compare(b.length(), a.length()));
 
 		int l = Math.min(strs.length, 3);
 		String[] res = new String[l];
+		//достаютс€ самые длинны слова, которые в начале массива
 		for(int i = 0; i < l; i++) {
 			if(strs[i].endsWith(","))
 				res[i] = "#"+strs[i].toLowerCase().substring(0, strs[i].length()-1).trim();
@@ -235,6 +246,7 @@ public class b6 {
 		
 		while(complete<n) {
 			Map<Integer,Integer> sums = new HashMap<Integer,Integer>();
+			//считаем все возможные суммы
 			for(int i = 0; i < complete-1; i++) {
 				for(int j = i+1; j < complete; j++) {
 					if(i==j)continue;
@@ -250,7 +262,7 @@ public class b6 {
 			int[] keySet = new int[sums.keySet().toArray().length];
 			for(int j = 0; j < keySet.length; j++) keySet[j] = (int)sums.keySet().toArray()[j];
 			Arrays.sort(keySet);
-			
+			//добавл€ем наименьшее число, которое получилось один раз
 			for(int i = 0; i < keySet.length; i++) {
 				//key = candidate for Ulam nuber
 				if(sums.get(keySet[i]) == 1 && !in(nums, keySet[i])) {
@@ -266,23 +278,13 @@ public class b6 {
 		return nums[n-1];
 		
 	}
-	static boolean in(int[] a, int n) {
-		for(int i = 0; i < a.length; i++) {
-			if(a[i] == n) return true;
-		}
-		return false;
-	}
-	static boolean in(String[] a, String n) {
-		for(int i = 0; i < a.length; i++) {
-			if(a[i].equals(n)) return true;
-		}
-		return false;
-	}
+	
 	
 	static String longestNonrepeatingSubstring(String s) {
 		char[] chrs = s.toCharArray();
 		String res = "";
 		String temp = "";
+		//просто бежим по строке и смотрим на неповторение теущей подстроки и подстроки из исходной строки
 		for(int i = 0; i < chrs.length; i++) {
 			if(temp.indexOf(chrs[i]) == -1) {
 				temp += chrs[i];
@@ -300,6 +302,7 @@ public class b6 {
 		return res;
 	}
 	
+	//можно было бы использовать енам, но было решено сделать так
 	static String convertToRoman(int n) {
 		String res = "";
 		//use additional symbols in alphabet
@@ -307,6 +310,7 @@ public class b6 {
 		int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
 		if(n < 0 || n > 3999) return "out of range";
 		
+		//сборка строки циклом
 		int i = 0;
 		while(n>0 && i < chrs.length) {
 			if(values[i] <= n) {
@@ -319,7 +323,7 @@ public class b6 {
 		
 		return res;
 	}
-	
+	//разделение строки по символам = и сравнение резултатов вычислени€
 	static boolean formula(String s) {
 		String[] parts = s.split("=");
 		int res = 0;
@@ -337,6 +341,7 @@ public class b6 {
 		}
 		return true;
 	}
+	//калькул€тор строки без скобок, ничего особенного
 	static int calculate(String s) throws Exception{
 		s = s.replaceAll(" ", "");
 		
@@ -400,18 +405,34 @@ public class b6 {
 		}
 		return false;
 	}
+	//првоерка на палиндромность
 	static boolean isPalindrome(String s) {
 		for(int i = 0, j = s.length()-1; i<j; i++,j--) {
 			if(s.charAt(i) != s.charAt(j)) return false;
 		}
 		return true;
 	}
+	//создание дочернего палиндрома
 	static String createChildPalindrome(String s) {
 		String res = "";
 		for(int i = 0; i < s.length(); i+=2) {
 			res += String.valueOf(Integer.parseInt(String.valueOf(s.charAt(i))) + Integer.parseInt(String.valueOf(s.charAt(i+1))));
 		}
 		return res;
+	}
+	
+	//вспомогательные функции
+	static boolean in(int[] a, int n) {
+		for(int i = 0; i < a.length; i++) {
+			if(a[i] == n) return true;
+		}
+		return false;
+	}
+	static boolean in(String[] a, String n) {
+		for(int i = 0; i < a.length; i++) {
+			if(a[i].equals(n)) return true;
+		}
+		return false;
 	}
 	
 }

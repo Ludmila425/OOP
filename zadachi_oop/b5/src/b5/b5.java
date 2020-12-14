@@ -66,6 +66,7 @@ public class b5 {
 		int[] a = new int[s.length()];
 		char[] c = s.toCharArray();
 		a[0] = (int)c[0];
+		//считаем разницу между текущим символом и предыдущим по таблице ASCII
 		for(int i =1; i < s.length(); i++) {
 			a[i] = (int)c[i] - c[i-1];
 		}
@@ -74,6 +75,7 @@ public class b5 {
 	static String decrypt(int[] a) {
 		String res = "";
 		res += (char)a[0];
+		//восстанавливаем символы по разнисти между ними, начина€ с первого
 		for(int i = 1; i < a.length; i++) {
 			a[i] += a[i-1];
 			res += (char)(a[i]);
@@ -81,10 +83,13 @@ public class b5 {
 		return res; 
 	}
 	
+	//считает разницу между х и у координатами
+	//дл€ каждой из фигур пров€рет, может ли она двигатьс€ с такими разност€ми
 	static boolean canMove(String name, String pos1, String pos2) {
 		int dx = (int)pos2.charAt(0) - (int)pos1.charAt(0);
 		int dy = (int)pos2.charAt(1) - (int)pos1.charAt(1);
 		switch(name) {
+			//например, пешка идет только вперед.
 			case "пешка":
 				if(dx == 0 && dy == 1) return true;
 				break;
@@ -116,6 +121,7 @@ public class b5 {
 		Map<Character,Integer> chrs2 = new HashMap<Character,Integer>();
 		
 		//collecting all the chars in both strings into dicts
+		//first initialize with 0's, then it's value 
 		for(int i = 0; i < str1.length; i++) {
 			chrs1.put(str1[i], 0);
 		}
@@ -138,8 +144,10 @@ public class b5 {
 		}
 		int index = 0;
 		for(int i = 0; i < s1.length(); i++) {
+			//провер€ем неравные символы
 			if(str1[i] != str2[i]) {
 				boolean flag = false;
+				//бежим по второй строке до момента, пока символы не станут равными
 				for(int j = index; j < str2.length; j++) {
 					if(str1[i] == str2[j]) {
 						index = j;
@@ -147,6 +155,7 @@ public class b5 {
 						break;
 					}
 				}
+				//если цикл закончилс€ самосто€тлельно, а не break, то аканчиваем и возвращаем false
 				if (flag) continue;
 				return false;
 			}
@@ -156,7 +165,9 @@ public class b5 {
 	
 	static int sumDigProd(int... args) {
 		int res = 0;
+		//складываем все аргументы вместе
 		for(int i = 0; i < args.length; i++) res+=args[i];
+		//произведение цифра числа, по то больше либо равно 10
 		while(res>9) {
 			int r = 1;
 			while(res>1) {
@@ -171,6 +182,7 @@ public class b5 {
 	static String[] sameVowelGroup(String[] strs) {
 		List<String> res = new ArrayList<String>();
 		
+		//оставл€ем все гласные в первом
 		Pattern p = Pattern.compile("[^eyuioaеыаоэ€ию]");
 		Matcher m1 = p.matcher(strs[0]);
 		
@@ -180,6 +192,7 @@ public class b5 {
 			m1 = p.matcher(strs[i]);
 			char[] s = m1.replaceAll("").toCharArray();
 			boolean flag = false;
+			//оставл€ем все гласные и сравниваем с первым словом.
 			for(int j = 0; j < s.length; j++) {
 				if(!ss1.contains(String.valueOf(s[j]))) flag = true;
 			}
@@ -192,6 +205,7 @@ public class b5 {
 
 	}
 	
+	//просто согласно алгоритму, ничего особенного
 	static boolean validateCard(String a) {
 		int[] ar = new int[a.length()];
 		if (ar.length < 14 || ar.length > 19) return false;
@@ -222,6 +236,8 @@ public class b5 {
 		return digit == 10-(sum%10);
 	}
 	
+	//собираем нужную строку из заданных, в зависимости от числа
+	//строка собираетс€, достава€ из массива элемента по индексам, бес циклов
 	static String numToRus(int num) {
 		String[][] words = {{"","сто ","двести ","триста ","четыреста ","п€тьсот ","шестьсот ","семьсот ","восемьсот ","дев€тьсот ","дев€тьсот"},
 							{""," ","двадцать ","тридцать ","сорок ","п€тьдес€т ","шестьдес€т ","семьдес€т ","восемьдес€т ","дев€носто"},
@@ -243,6 +259,7 @@ public class b5 {
 		return "";
 	}
 	
+	//вз€та€ из дефолтной библиотеки SHA256 
 	static String getSha256Hash(String base){
 		try {
 			MessageDigest md = MessageDigest.getInstance( "SHA-256" );
@@ -258,6 +275,8 @@ public class b5 {
 		}
 	}
 	
+	//всю строку в нижний регистр
+	//раздел€ем на слова и у первого слова первую букву в верхний регистр
 	static String correctTitle(String title) {
 		title = title.toLowerCase();
 		String[] words = title.split(" ");
@@ -270,8 +289,9 @@ public class b5 {
 				
 	}
 	
+	//сначала проверить число на его гексогональность
+	//потом отрисовать строку, использу€ вспомогательную функцию
 	static String hexLattice(int n) {
-		
 		if((n-1)%6 == 0) {
 			int k = (n-1)/6;
 			int r = 1;
@@ -294,15 +314,13 @@ public class b5 {
 			res += genLine(size, i) + '\n';
 		}
 		return res;
-		
-			
-		
 	}
+	//вспомогатеьна€ функци€ рисует а символов посердине строки длинной n
 	static String genLine(int a, int n) {
-		int sapceing = (a - n*2-1)/2;
+		int spaceing = (a - n*2-1)/2;
 		String res = "";
 		for(int i = 0; i < a; i++) {
-			if(i > sapceing && i < a - sapceing) {
+			if(i > spaceing && i < a - spaceing) {
 				if(n % 2 == 1) {
 					if(i%2 == 0)res+='o';
 					else res += ' ';
