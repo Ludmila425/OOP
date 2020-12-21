@@ -1,0 +1,10 @@
+INDEX VERSION 1.131+C:\Users\Вадим\labs\.metadata\.plugins\org.eclipse.jdt.core
+1968947691.index
+2095943104.index
+2196199803.index
+3946796104.index
+2620941534.index
+39645565.index
+2606080199.index
+3964833873.index
+87111012.index
